@@ -7,11 +7,9 @@ import com.android.paging.pojo.Posts
 
 class PostsPagingSource(private val backend: PagingRepository) : PagingSource<Int, Posts>() {
 
-    var i = false
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Posts> {
         return try {
-            val currentPage = if (!i) 60 else params.key ?: 1
-            i = true
+            val currentPage = params.key ?: 1
             val response = backend.getPosts(currentPage)
             LoadResult.Page(
                 data = response.data,
